@@ -6,14 +6,15 @@ if(Meteor.isServer){
     // add new users to the Collection
     Accounts.onLogin(function(user){
         var userId = user.user._id;
-
-        console.log("user logged in  "+ userId);
+        var username = Meteor.users.findOne({_id:userId}).username;
+        console.log("user logged in  "+ userId + " "+ username);
 
         var count = Positions.find({userId:userId}).count();
         if(count == 0){
             console.log("new user added "+ userId);
             Positions.insert({
                 userId:userId,
+                username:username,
                 position:{lat:0, lng:0},
             });
         }
@@ -71,19 +72,15 @@ if (Meteor.isClient) {
 
                 // Get current markers of all users on the map
                 markerCursor.forEach(function(pos) {
-                    var username = '';
-                    if(Meteor.user()) {
-                        username = Meteor.user().username;
-                        console.log(username);
-                    }
+
 
                     new google.maps.Marker({
                         position: new google.maps.LatLng(pos.position.lat, pos.position.lng),
                         map: map.instance,
                         animation: google.maps.Animation.DROP,
 
-                        label: username,
-                        title: username
+                        label: pos.username,
+                        title: pos.username
                     });
                 });
 
