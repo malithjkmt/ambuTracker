@@ -14,7 +14,7 @@ if(Meteor.isServer){
             console.log("new user added "+ userId);
             Positions.insert({
                 userId:userId,
-                position:{lat:6.528042, lng:80.131800},
+                position:{lat:0, lng:0},
             });
         }
     });
@@ -71,10 +71,19 @@ if (Meteor.isClient) {
 
                 // Get current markers of all users on the map
                 markerCursor.forEach(function(pos) {
-                    console.log("add marker");
+                    var username = '';
+                    if(Meteor.user()) {
+                        username = Meteor.user().username;
+                        console.log(username);
+                    }
+
                     new google.maps.Marker({
                         position: new google.maps.LatLng(pos.position.lat, pos.position.lng),
-                        map: map.instance
+                        map: map.instance,
+                        animation: google.maps.Animation.DROP,
+
+                        label: username,
+                        title: username
                     });
                 });
 
