@@ -1,5 +1,5 @@
 Markers = new Mongo.Collection('markers');
-var MAP_ZOOM = 14;
+var MAP_ZOOM = 20;
 
 if (Meteor.isClient) {
     Meteor.startup(function() {
