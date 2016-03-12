@@ -1,9 +1,14 @@
 <head>
-  <title>AmbuTracker</title>
+    <title>map-demo</title>
 </head>
 
 <body>
- <h1>Ambu Tracker</h1>
-    Track an Ambulance
-
+    <h1>Ambulance Tracker</h1>
+    <div class="map-container">
+        {{>map}}
+    </div>
 </body>
+
+<template name="map">
+    {{> googleMap name="exampleMap" options=myMapOptions}}
+</template>
