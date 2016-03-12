@@ -4,7 +4,9 @@
 </head>
 
 <body>
+    {{> loginButtons}}
     <h1>Ambulance Tracker</h1>
+
     <div class="map-container">
         {{>map}}
     </div>
@@ -12,9 +14,12 @@
 
 <template name="map">
     {{#unless geolocationError}}
-        {{> googleMap name="myMap" options=myMapOptions}}
+        {{> googleMap name="myMap"
+        options=myMapOptions
+        }}
     {{else}}
         Geolocation failed: {{geolocationError}}
     {{/unless}}
 
 </template>
+

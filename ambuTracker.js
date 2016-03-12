@@ -1,10 +1,35 @@
-Markers = new Mongo.Collection('markers');
-var MAP_ZOOM = 20;
+Positions = new Mongo.Collection('positions');
+var MAP_ZOOM = 10;
+
+if(Meteor.isServer){
+
+    // add new users to the Collection
+    Accounts.onLogin(function(user){
+        var userId = user.user._id;
+
+        console.log("user logged in  "+ userId);
+
+        var count = Positions.find({userId:userId}).count();
+        if(count == 0){
+            console.log("new user added "+ userId);
+            Positions.insert({
+                userId:userId,
+                position:{lat:6.528042, lng:80.131800},
+            });
+        }
+    });
+
+}
 
 if (Meteor.isClient) {
+
+
     Meteor.startup(function() {
         GoogleMaps.load();
+
     });
+
+
 
     Template.map.helpers({
         geolocationError: function() {
@@ -15,8 +40,11 @@ if (Meteor.isClient) {
             var latLng = Geolocation.latLng();
 
             if (GoogleMaps.loaded() && latLng) {
+                 map = new google.maps.LatLng(latLng.lat, latLng.lng);
+
+                // Return map
                 return {
-                    center: new google.maps.LatLng(latLng.lat, latLng.lng),
+                    center: map,
                     zoom: MAP_ZOOM
                 };
             }
@@ -25,36 +53,71 @@ if (Meteor.isClient) {
 
 
 
+
     Template.map.onCreated(function() {
         var self = this;
 
         GoogleMaps.ready('myMap', function(map) {
-            var marker;
 
-            // Create and move the marker when latLng changes.
+            var position;
+
+            // Create and move the position when latLng changes.
             self.autorun(function() {
+
+                //####### Setup markers########
+
+                // get all current markers from Collection
+                var markerCursor = Positions.find({});
+
+                // Get current markers of all users on the map
+                markerCursor.forEach(function(pos) {
+                    console.log("add marker");
+                    new google.maps.Marker({
+                        position: new google.maps.LatLng(pos.position.lat, pos.position.lng),
+                        map: map.instance
+                    });
+                });
+
+                // Update My location
                 var latLng = Geolocation.latLng();
                 if (! latLng)
                     return;
 
-                // If the marker doesn't yet exist, create it.
-                if (! marker) {
-                    marker = new google.maps.Marker({
+                // If my  position doesn't yet exist, create it.
+                if (! position) {
+                    position = new google.maps.Marker({
                         position: new google.maps.LatLng(latLng.lat, latLng.lng),
                         map: map.instance
                     });
                 }
-                // The marker already exists, so we'll just change its position.
+                // The position already exists, so we'll just change its position.
                 else {
-                    marker.setPosition(latLng);
+                    position.setPosition(latLng);
                 }
 
+                // If the user has logged in
+                if(Meteor.user()) {
+                    var userId = Meteor.userId();
+                    //update Collection
+                    console.log(userId +  " user is being updated because his position changed!!!");
+
+                    // get the _id of this user
+                    var id = Positions.findOne({userId: userId})._id;
+
+                    // Update the collection
+                    Positions.update({_id: id}, {$set: {position: {lat:latLng.lat, lng:latLng.lng}}});
+
+                }
                 // Center and zoom the map view onto the current position.
-                map.instance.setCenter(marker.getPosition());
-                map.instance.setZoom(MAP_ZOOM);
+                map.instance.setCenter(position.getPosition());
+                map.instance.setZoom(MAP_ZOOM)
             });
+
         });
     });
 
 
+    Accounts.ui.config({
+        passwordSignupFields: "USERNAME_ONLY"
+    });
 }
