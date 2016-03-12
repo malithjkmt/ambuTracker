@@ -17,3 +17,5 @@ The user can select either Malukarama road or Flower road as where he wants to g
 Thats from the users point of view. The UI shall use the google maps and be really responsive and seamless.
     
 In addition to that there is a simple admin UI for a admin user to update the available ambulances at each hospital.
+
+Current developer version is deployed at:- http://ambutracker.meteor.com 
