@@ -11,5 +11,10 @@
 </body>
 
 <template name="map">
-    {{> googleMap name="myMap" options=myMapOptions}}
+    {{#unless geolocationError}}
+        {{> googleMap name="myMap" options=myMapOptions}}
+    {{else}}
+        Geolocation failed: {{geolocationError}}
+    {{/unless}}
+
 </template>
