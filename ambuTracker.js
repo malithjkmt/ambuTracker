@@ -61,52 +61,45 @@ if (Meteor.isClient) {
         GoogleMaps.ready('myMap', function(map) {
 
             var position;
+            var positions = [];
 
             // Create and move the position when latLng changes.
             self.autorun(function() {
 
                 //####### Setup markers########
 
+
                 // get all current markers from Collection
                 var markerCursor = Positions.find({});
 
-                // Get current markers of all users on the map
+                // Update position of each user
                 markerCursor.forEach(function(pos) {
+                    console.log(pos.position);
 
-
-                    new google.maps.Marker({
-                        position: new google.maps.LatLng(pos.position.lat, pos.position.lng),
-                        map: map.instance,
-                        animation: google.maps.Animation.DROP,
-
-                        label: pos.username,
-                        title: pos.username
-                    });
+                    if(!positions[pos._id]){
+                        positions[pos._id] = new google.maps.Marker({
+                            position: new google.maps.LatLng(pos.position.lat, pos.position.lng),
+                            map: map.instance,
+                            label: pos.username,
+                            title: pos.username
+                        });
+                    }
+                    else{
+                        console.log('inside else');
+                         positions[pos._id].setPosition(pos.position);
+                    }
                 });
 
-                // Update My location
-                var latLng = Geolocation.latLng();
-                if (! latLng)
-                    return;
-
-                // If my  position doesn't yet exist, create it.
-                if (! position) {
-                    position = new google.maps.Marker({
-                        position: new google.maps.LatLng(latLng.lat, latLng.lng),
-                        map: map.instance
-                    });
-                }
-                // The position already exists, so we'll just change its position.
-                else {
-                    position.setPosition(latLng);
-                }
 
                 // If the user has logged in
                 if(Meteor.user()) {
                     var userId = Meteor.userId();
                     //update Collection
                     console.log(userId +  " user is being updated because his position changed!!!");
-
+                    var latLng = Geolocation.latLng();
+                    if (! latLng)
+                        console.log('returned!!!!');
+                        return;
                     // get the _id of this user
                     var id = Positions.findOne({userId: userId})._id;
 
@@ -115,13 +108,12 @@ if (Meteor.isClient) {
 
                 }
                 // Center and zoom the map view onto the current position.
-                map.instance.setCenter(position.getPosition());
-                map.instance.setZoom(MAP_ZOOM)
+               // map.instance.setCenter(position.getPosition());
+               // map.instance.setZoom(MAP_ZOOM)
             });
 
         });
     });
-
 
     Accounts.ui.config({
         passwordSignupFields: "USERNAME_ONLY"
