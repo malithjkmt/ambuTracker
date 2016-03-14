@@ -20,10 +20,23 @@ if(Meteor.isServer){
         }
     });
 
+    Meteor.publish("OnlineUsers", function() {
+        return Meteor.users.find({ "status.idle": false });
+    });
+    Meteor.publish("Positions", function() {
+
+        return Positions.find({ });
+    });
+
+
 }
 
 if (Meteor.isClient) {
+    var latLng;
+    var map;
 
+    Meteor.subscribe('OnlineUsers');
+    Meteor.subscribe('Positions');
 
     Meteor.startup(function() {
         GoogleMaps.load();
@@ -38,7 +51,7 @@ if (Meteor.isClient) {
             return error && error.message;
         },
         myMapOptions: function() {
-            var latLng = Geolocation.latLng();
+            latLng = Geolocation.latLng();
 
             if (GoogleMaps.loaded() && latLng) {
                  map = new google.maps.LatLng(latLng.lat, latLng.lng);
@@ -46,13 +59,22 @@ if (Meteor.isClient) {
                 // Return map
                 return {
                     center: map,
-                    zoom: MAP_ZOOM
+                    zoom: MAP_ZOOM,
+
                 };
             }
         }
     });
 
 
+    Template.dashBoard.events({
+        'click .btn': function() {
+
+            if ( latLng){
+                GoogleMaps.maps.myMap.instance.setCenter({lat:latLng.lat,lng:latLng.lng});
+            }
+        }
+    });
 
 
     Template.map.onCreated(function() {
@@ -77,29 +99,29 @@ if (Meteor.isClient) {
 
 
                 markerCursor.forEach(function(pos) {
-                    console.log(pos.position);
-                    console.log(pos.userId);
-                    console.log(pos._id);
+
+                    // Load only the online users
+                    if(Meteor.users.findOne({_id:pos.userId})){
 
                     // if the marker of the user has never been added to the map
-                    if(!positions[pos.userId]){
-                        console.log('added new marker for '+pos.username);
+                    if (!positions[pos.userId]) {
+                        console.log('added new marker for ' + pos.username);
                         positions[pos.userId] = new google.maps.Marker({
                             position: new google.maps.LatLng(pos.position.lat, pos.position.lng),
                             map: map.instance,
                             label: pos.username,
-                            title: pos.username
+                            title: pos.username,
+                            //animation: google.maps.Animation.BOUNCE
                         });
                     }
 
-                  /*  if(Meteor.user[pos._id]){
-                        console.log('user ' + pos.username+ ' logged in');
-                    }*/
+
                     // if the marker of that user already been added to the map
-                    else{
-                         console.log('updating marker for '+pos.username);
-                         positions[pos.userId].setPosition(pos.position);
+                    else {
+                        console.log('updating marker for ' + pos.username);
+                        positions[pos.userId].setPosition(pos.position);
                     }
+                }
                 });
 
 
@@ -108,7 +130,7 @@ if (Meteor.isClient) {
                     var userId = Meteor.userId();
                     //update Collection
 
-                    var latLng = Geolocation.latLng();
+                    latLng = Geolocation.latLng();
                     if (! latLng)
                         return;
 

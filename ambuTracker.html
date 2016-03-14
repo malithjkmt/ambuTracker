@@ -1,12 +1,15 @@
 <head>
     <title>AmbuTracker</title>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 
 <body>
     {{> loginButtons}}
-    <h1>Ambu Tracker</h1>
-
+    <h1>Tracker Prototype</h1>
+    {{>dashBoard}}
+    <br>
+    psst: for more accurate location, turn on "location" if you are on a mobile device
+    <br>
     <div class="map-container">
         {{>map}}
     </div>
@@ -14,12 +17,21 @@
 
 <template name="map">
     {{#unless geolocationError}}
-        {{> googleMap name="myMap"
+        {{> googleMap
+        name="myMap"
         options=myMapOptions
         }}
     {{else}}
         Geolocation failed: {{geolocationError}}
+        <h3>Check your internet connection or turn on Location</h3>
     {{/unless}}
 
 </template>
 
+<template name="dashBoard">
+
+    <span class="btn">
+       <h4><i class="fa fa-chrome fa-2x fa-spin"></i>  click for my location</h4>
+    </span>
+
+</template>
