@@ -1,20 +1,57 @@
 <head>
     <title>AmbuTracker</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 
 <body>
-<div class="container-fluid">
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Ambu Tracker</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container">
     {{> loginButtons}}
-    <h1>Tracker Prototype</h1>
+        <br>
+
     {{>dashBoard}}
     <br>
+
     psst: for more accurate location, turn on "location" if you are on a mobile device
     <br>
-    <div class="map-container">
-        {{>map}}
     </div>
+    <div class="container fill">
+        <div id="map">
+            {{>map}}
+        </div>
+
     </div>
+
+    <script>
+        $(document).ready(function(){
+            $('.btn-success').tooltip({title: "Show my location", animation: true, placement: "auto bottom"});
+            $('.btn-warning').tooltip({title: "Zoom in to my location", animation: true, placement: "auto bottom"});
+        });
+    </script>
+
+
 </body>
 
 <template name="map">
@@ -29,12 +66,12 @@
     {{/unless}}
 
 </template>
-
 <template name="dashBoard">
 
-    <div class="row">
-        <div class="col-xs-6" id="myLocation"><i class="fa fa-chrome fa-2x fa-spin"></i>  click for my location</div>
-        <div class="col-xs-6" id="zoomMe"><i class="fa fa-arrows-alt fa-2x fa-spin"></i>  click to Zoom</div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-success" id="myLocation" style="width: 160px;margin: 0 1px;
+">My location</button>
+        <button type="button" class="btn btn-warning" id="zoomMe" style="width: 160px
+">Quick Zoom</button>
     </div>
-
 </template>
