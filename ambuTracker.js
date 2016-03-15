@@ -1,5 +1,5 @@
 Positions = new Mongo.Collection('positions');
-var MAP_ZOOM = 10;
+var ZOOM_LEVEL = 10;
 
 if(Meteor.isServer){
 
@@ -59,7 +59,7 @@ if (Meteor.isClient) {
                 // Return map
                 return {
                     center: map,
-                    zoom: MAP_ZOOM,
+                    zoom: ZOOM_LEVEL,
 
                 };
             }
@@ -68,10 +68,16 @@ if (Meteor.isClient) {
 
 
     Template.dashBoard.events({
-        'click .btn': function() {
+        'click .myLocation': function() {
 
             if ( latLng){
                 GoogleMaps.maps.myMap.instance.setCenter({lat:latLng.lat,lng:latLng.lng});
+            }
+        },
+        'click .zoomMe': function() {
+
+            if ( latLng){
+                GoogleMaps.maps.myMap.instance.setZoom(18);
             }
         }
     });
@@ -145,7 +151,7 @@ if (Meteor.isClient) {
 
                 // Center and zoom the map view onto the current position.
                // map.instance.setCenter(position.getPosition());
-               // map.instance.setZoom(MAP_ZOOM)
+               // map.instance.setZoom(ZOOM_LEVEL)
             });
 
         });

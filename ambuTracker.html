@@ -4,6 +4,7 @@
 </head>
 
 <body>
+<div class="container">
     {{> loginButtons}}
     <h1>Tracker Prototype</h1>
     {{>dashBoard}}
@@ -12,6 +13,7 @@
     <br>
     <div class="map-container">
         {{>map}}
+    </div>
     </div>
 </body>
 
@@ -30,8 +32,11 @@
 
 <template name="dashBoard">
 
-    <span class="btn">
+    <span class="myLocation">
        <h4><i class="fa fa-chrome fa-2x fa-spin"></i>  click for my location</h4>
+        </span>
+    <span class="zoomMe">
+        <h4><i class="fa fa-arrows-alt fa-2x fa-spin"></i>  click to Zoom</h4>
     </span>
 
 </template>
