@@ -68,13 +68,13 @@ if (Meteor.isClient) {
 
 
     Template.dashBoard.events({
-        'click .myLocation': function() {
+        'click #myLocation': function() {
 
             if ( latLng){
                 GoogleMaps.maps.myMap.instance.setCenter({lat:latLng.lat,lng:latLng.lng});
             }
         },
-        'click .zoomMe': function() {
+        'click #zoomMe': function() {
 
             if ( latLng){
                 GoogleMaps.maps.myMap.instance.setZoom(18);
