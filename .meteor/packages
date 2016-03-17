@@ -20,6 +20,7 @@ insecure                # Allow all DB writes from clients (for prototyping)
 dburles:google-maps
 mdg:geolocation
 accounts-password
-accounts-ui
 mizzao:user-status
 twbs:bootstrap
+accounts-base
+accounts-ui-bootstrap-3

@@ -18,8 +18,7 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="#"> {{>newLoginButton}}</a></li>
 
 
             </ul>
@@ -28,7 +27,7 @@
 </nav>
 
     <div class="container">
-    {{> loginButtons}}
+
         <br>
 
     {{>dashBoard}}
@@ -53,6 +52,9 @@
 
 
 </body>
+<template name="newLoginButton">
+    {{>_loginButtons}}
+</template>
 
 <template name="map">
     {{#unless geolocationError}}
