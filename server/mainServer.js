@@ -5,10 +5,10 @@
         console.log(username +"  logged in ");
 
 
-        if(!(Positions.find({userId:userId}))){
+        if(!(Markers.find({userId:userId}))){
             console.log("new user added; userID = "+ userId + ", username = "+username);
 
-            Positions.insert({
+            Markers.insert({
                 userId:userId,
                 username:username,
                 position:{lat:0, lng:0},

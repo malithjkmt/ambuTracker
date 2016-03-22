@@ -1,2 +1,2 @@
-Positions = new Mongo.Collection('positions');
+Markers = new Mongo.Collection('markers');
 

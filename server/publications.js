@@ -4,7 +4,8 @@
 Meteor.publish("OnlineUsers", function() {
     return Meteor.users.find({ "status.idle": false });
 });
-Meteor.publish("Positions", function() {
+Meteor.publish("Markers", function() {
 
-    return Positions.find({ });
+    return Markers.find({ });
 });
+
