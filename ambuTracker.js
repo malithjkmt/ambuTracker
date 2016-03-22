@@ -83,13 +83,10 @@ if (Meteor.isClient) {
         }
     });
 
-
     Template.map.onCreated(function() {
         var self = this;
 
         GoogleMaps.ready('myMap', function(map) {
-
-
             positions = [];
 
 
