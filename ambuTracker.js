@@ -29,6 +29,18 @@ if(Meteor.isServer){
     });
 
 
+/*
+    // Update the collection
+    Positions.update({_id: id}, {$set: {position: {lat:latLng.lat, lng:latLng.lng}}});
+   ;
+*/
+
+    Meteor.methods({
+        'UpdatePositions': function(id, latLng){
+            Positions.update({_id: id}, {$set: {position: {lat:latLng.lat, lng:latLng.lng}}});
+            console.log(id +  " my position changed and updated the Mongo");
+        }
+    });
 }
 
 if (Meteor.isClient) {
@@ -40,7 +52,6 @@ if (Meteor.isClient) {
 
     Meteor.startup(function() {
         GoogleMaps.load();
-        Session.set("loginButtonClicked",false);
 
     });
 
@@ -142,8 +153,7 @@ if (Meteor.isClient) {
                     var id = Positions.findOne({userId: userId})._id;
 
                     // Update the collection
-                    Positions.update({_id: id}, {$set: {position: {lat:latLng.lat, lng:latLng.lng}}});
-                    console.log(userId +  " my position changed and updated the Mongo");
+                    Meteor.call('UpdatePositions', id, latLng);
                 }
 
 
@@ -154,21 +164,6 @@ if (Meteor.isClient) {
 
         });
     });
-
-    Template.newLoginButton.events({
-        'click #login': function() {
-            Session.set("loginButtonClicked",true);
-        }
-    });
-
-    Tracker.autorun(function () {
-        var e = Session.get("loginButtonClicked");
-        if(e) {
-            alert("second FUnc!!!!!");
-        }
-        Session.set("loginButtonClicked",false);
-    });
-
 
     Accounts.ui.config({
         passwordSignupFields: "USERNAME_ONLY",
