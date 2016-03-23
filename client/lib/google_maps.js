@@ -7,9 +7,27 @@ gmaps = {
     // google markers objects
     markers: [],
 
-    Moratuwa : {lat: 6.795086, lng: 79.900783},
+    currentLocation: {lat: 6.795086, lng: 79.900783},
 
 
+    SetMyLocation: function(callback){
+        // Try HTML5 geolocation.
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                callback(pos);
+            }, function() {
+                console.log("Geolocation error!!");
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            console.log("Geolocation error!!");
+        }
+    },
 
     // google lat lng objects
     latLngs: [],
@@ -21,11 +39,12 @@ gmaps = {
     addMarker: function(marker) {
         var gLatLng = new google.maps.LatLng(marker.lat, marker.lng);
         var gMarker = new google.maps.Marker({
+            id: marker.id,
             position: gLatLng,
             map: gmaps.map,
             title: marker.title,
             // animation: google.maps.Animation.DROP,
-            icon:'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            icon:'img/male.png'
         });
         this.latLngs.push(gLatLng);
         this.markers.push(gMarker);
@@ -44,17 +63,19 @@ gmaps = {
     },
 
     // check if a marker already exists
-    markerExists: function(key, val) {
-        _.each(gmaps.markers, function(storedMarker) {
-            if (storedMarker[key] == val)
-                return true;
+    markerExists: function(key, val, callback) {
+
+        var ex = false;
+        gmaps.markers.forEach( function(storedMarker) {
+            console.log('inside foreach');
+            if (storedMarker.id == val){
+                ex= true;
+            }
         });
-        return false;
+        callback(ex);
+
     },
-
-
-
-
+    
 
     // initialize the map
     initialize: function() {
@@ -77,7 +98,6 @@ gmaps = {
             streetViewControl: true,
             rotateControl: true,
             fullscreenControl: true,
-            mapTypeControl: true,
             mapTypeControlOptions: {
                 style: google.maps.MapTypeControlStyle.DEFAULT,
                 mapTypeIds: [
@@ -94,13 +114,19 @@ gmaps = {
             mapOptions
         );
 
+
+
+
+
+
         // Create the DIV to hold the control and call the CenterControl()
         // constructor passing in this DIV.
-        var centerControlDiv = document.createElement('div');
-        new gmaps.CenterControl(centerControlDiv, gmaps.map);
 
-        centerControlDiv.index = 1;
-        gmaps.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
+            var centerControlDiv = document.createElement('div');
+            new gmaps.CenterControl(centerControlDiv, gmaps.map);
+
+            centerControlDiv.index = 1;
+            gmaps.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
 
         // global flag saying we intialized already
         Session.set('map', true);
@@ -108,6 +134,7 @@ gmaps = {
 
 
     },
+
 
     CenterControl: function(controlDiv, map) {
 
@@ -139,8 +166,34 @@ gmaps = {
 
         // Setup the click event listeners: simply set the map to Moratuwa.
         controlUI.addEventListener('click', function() {
-            gmaps.map.setCenter(gmaps.Moratuwa)
-        });
+
+                // add a marker on my current location and setCenter
+                gmaps.SetMyLocation(function (pos) {
+                    gmaps.map.setCenter(pos);
+                    var userId = 'defaultUserID';
+                    if(Meteor.user()) {
+                        userId = Meteor.user()._id;
+                    }
+                        var objMarker = {
+                            id: userId,  //_id ???
+                            lat: pos.lat,
+                            lng: pos.lng,
+                            title: 'me'
+                        };
+
+                        // check and add new marker if not exist
+                        gmaps.markerExists('id', objMarker.id, function (existence) {
+                            console.log("marker exists = " + existence);
+                            if (!existence) {
+                                console.log('new marker added');
+                                gmaps.addMarker(objMarker);
+                            }
+
+                        });
+
+
+                });
+            });
 
         controlUI.addEventListener('mouseover', function() {
             controlUI.style.backgroundImage = "url('img/loc2_blue_30.png')";
