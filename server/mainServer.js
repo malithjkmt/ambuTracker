@@ -1,23 +1,17 @@
- // add new users to the Collection
-    Accounts.onLogin(function(user){
 
-        var userId = user.user._id;
-        var username = Meteor.users.findOne({_id:userId}).username;
-        console.log(username +"  logged in ");
+// add new users to the Collection
+Accounts.onLogin(function(user){
+    var userId = user.user._id;
+    var username = Meteor.users.findOne({_id:userId}).username;
+    console.log("user logged in  "+ userId + " "+ username);
 
-
-        if(!(Markers.find({userId:userId}))){
-            console.log("new user added; userID = "+ userId + ", username = "+username);
-
-            Markers.insert({
-                userId:userId,
-                username:username,
-                position:{lat:0, lng:0},
-            });
-        }
-    });
-
-
-
-
- 
+    var count = Positions.find({userId:userId}).count();
+    if(count == 0){
+        console.log("new user added "+ userId);
+        Positions.insert({
+            userId:userId,
+            username:username,
+            position:{lat:0, lng:0},
+        });
+    }
+});

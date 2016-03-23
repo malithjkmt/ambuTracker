@@ -22,3 +22,5 @@ mizzao:user-status
 twbs:bootstrap
 accounts-base
 accounts-ui-bootstrap-3
+mdg:geolocation
+google-maps
