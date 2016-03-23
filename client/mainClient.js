@@ -68,6 +68,53 @@
             centerControlDiv.index = 1;
             GoogleMaps.maps.myMap.instance.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
 
+            // Create the search box and link it to the UI element.
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            GoogleMaps.maps.myMap.instance.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            // Bias the SearchBox results towards current map's viewport.
+            GoogleMaps.maps.myMap.instance.addListener('bounds_changed', function() {
+                searchBox.setBounds(GoogleMaps.maps.myMap.instance.getBounds());
+            });
+
+            var markers = [];
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox.addListener('places_changed', function() {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Clear out the old markers.
+                markers.forEach(function(marker) {
+                    marker.setMap(null);
+                });
+                markers = [];
+
+                // For each place, get the icon, name and location.
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function(place) {
+
+                    // Create a marker for each place.
+                    markers.push(new google.maps.Marker({
+                        map: GoogleMaps.maps.myMap.instance,
+                        title: place.name,
+                        position: place.geometry.location
+                    }));
+
+                    if (place.geometry.viewport) {
+                        // Only geocodes have viewport.
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                GoogleMaps.maps.myMap.instance.fitBounds(bounds);
+            });
+
 
             // Create and move the position when latLng changes.
             self.autorun(function() {
