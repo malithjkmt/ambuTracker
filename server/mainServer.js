@@ -2,8 +2,11 @@
 // add new users to the Collection
 Accounts.onLogin(function(user){
     var userId = user.user._id;
-    var username = Meteor.users.findOne({_id:userId}).username;
+    var loginUser =  Meteor.users.findOne({_id:userId});
+    var username = loginUser.username;
     console.log("user logged in  "+ userId + " "+ username);
+    var type = loginUser.profile.Type;
+    console.log(type);
 
     var count = Positions.find({userId:userId}).count();
     if(count == 0){
@@ -12,6 +15,8 @@ Accounts.onLogin(function(user){
             userId:userId,
             username:username,
             position:{lat:0, lng:0},
+            type:type
+
         });
     }
 });

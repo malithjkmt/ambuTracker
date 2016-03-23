@@ -21,6 +21,7 @@ GoogleMaps = {
   },
   maps: {},
   _callbacks: {},
+
   initialize: function() {
     this._loaded.set(true);
     _.each(this.utilityLibraries, function(path) {
@@ -30,7 +31,13 @@ GoogleMaps = {
 
       document.body.appendChild(script);
     });
+
+
+
+
   },
+
+
   _ready: function(name, map) {
     _.each(this._callbacks[name], function(cb) {
       if (_.isFunction(cb)) {
@@ -84,7 +91,65 @@ GoogleMaps = {
       instance: new google.maps[type](options.element, options.options),
       options: options.options
     });
-  }
+
+
+  },
+
+  //################ Added by Malith############## begins....
+
+  // Custom controler on the Google Map to findd current location
+  CenterControl: function(controlDiv, map) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '100%';
+        controlUI.style.width = '50px';
+        controlUI.style.height = '50px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to recenter the map';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+
+        // Set background Image
+        controlUI.style.backgroundImage = "url('img/loc_black_30.png')";
+        controlUI.style.backgroundRepeat = 'no-repeat';
+        controlUI.style.backgroundPosition = 'center';
+        controlUI.appendChild(controlText);
+
+        // Setup the click event listeners: simply set the map to Moratuwa.
+        controlUI.addEventListener('click', function() {
+              var latLng = Geolocation.latLng();
+              var pos = {
+                    lat: latLng.lat,
+                    lng: latLng.lng
+                };
+                    GoogleMaps.maps.myMap.instance.setCenter(pos);
+                    GoogleMaps.maps.myMap.instance.setZoom(18);
+                  
+            });
+
+        controlUI.addEventListener('mouseover', function() {
+            controlUI.style.backgroundImage = "url('img/loc2_blue_30.png')";
+        });
+
+        controlUI.addEventListener('mouseout', function() {
+            controlUI.style.backgroundImage = "url('img/loc_black_30.png')";
+        });
+
+    },
+    
+ //################ Added by Malith############## ends....
+
 };
 
 Template.googleMap.onRendered(function() {
@@ -115,11 +180,15 @@ Template.googleMap.onRendered(function() {
       c.stop();
     }
   });
+
+
+ 
+
 });
 
 Template.googleMap.onDestroyed(function() {
-  if (GoogleMaps.maps[this._name]) {
-    google.maps.event.clearInstanceListeners(GoogleMaps.maps[this._name].instance);
-    delete GoogleMaps.maps[this._name];
+  if (GoogleMaps.maps.myMap.instances[this._name]) {
+    google.maps.event.clearInstanceListeners(GoogleMaps.maps.myMap.instances[this._name].instance);
+    delete GoogleMaps.maps.myMap.instances[this._name];
   }
 });

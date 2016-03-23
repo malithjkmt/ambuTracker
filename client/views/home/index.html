@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -25,16 +26,6 @@
     </div>
 </nav>
 
-<div class="container">
-
-    <br>
-
-    {{>dashBoard}}
-    <br>
-
-    psst: for more accurate location, turn on "location" if you are on a mobile device
-    <br>
-</div>
 <div class="container fill">
     <div id="map">
 
@@ -42,13 +33,6 @@
     </div>
 
 </div>
-
-<script>
-    $(document).ready(function(){
-        $('.btn-success').tooltip({title: "Show my location", animation: true, placement: "auto bottom"});
-        $('.btn-warning').tooltip({title: "Zoom in to my location", animation: true, placement: "auto bottom"});
-    });
-</script>
 
 
 </body>
@@ -68,12 +52,4 @@
     {{/unless}}
 
 </template>
-<template name="dashBoard">
 
-    <div class="btn-group">
-        <button type="button" class="btn btn-success" id="myLocation" style="width: 160px;margin: 0 1px;
-">My location</button>
-        <button type="button" class="btn btn-warning" id="zoomMe" style="width: 160px
-">Quick Zoom</button>
-    </div>
-</template>
