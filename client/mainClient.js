@@ -83,7 +83,6 @@
                                 map: map.instance,
                                 label: pos.username,
                                 title: pos.username,
-
                             });
                         }
 
