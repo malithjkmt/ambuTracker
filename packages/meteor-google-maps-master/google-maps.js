@@ -146,7 +146,7 @@ GoogleMaps = {
             controlUI.style.backgroundImage = "url('img/loc_black_30.png')";
         });
 
-    },
+    }
     
  //################ Added by Malith############## ends....
 
@@ -187,7 +187,7 @@ Template.googleMap.onRendered(function() {
 });
 
 Template.googleMap.onDestroyed(function() {
-  if (GoogleMaps.maps.myMap.instances[this._name]) {
+  if (GoogleMaps.maps.myMap.instance[this._name]) {
     google.maps.event.clearInstanceListeners(GoogleMaps.maps.myMap.instances[this._name].instance);
     delete GoogleMaps.maps.myMap.instances[this._name];
   }

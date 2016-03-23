@@ -110,6 +110,16 @@
                             positions[pos.userId].setPosition(pos.position);
                         }
                     }
+                    else{
+
+                        if(positions[pos.userId]){
+                            console.log('remove logged out user');
+                            positions[pos.userId].setMap(null);
+                            positions[pos.userId] = null;
+
+                        }
+
+                    }
                 });
 
 
