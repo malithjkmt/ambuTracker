@@ -4,13 +4,13 @@ Accounts.onLogin(function(user){
     var userId = user.user._id;
     var loginUser =  Meteor.users.findOne({_id:userId});
     var username = loginUser.username;
-    console.log("user logged in  "+ userId + " "+ username);
-    var type = loginUser.profile.Type;
-    console.log(type);
 
+    var type = loginUser.profile.Type;
+
+    // Check whether there is a marker already for this user
     var count = Positions.find({userId:userId}).count();
     if(count == 0){
-        console.log("new user added "+ userId);
+        // if not, add a new marker for the new user
         Positions.insert({
             userId:userId,
             username:username,
