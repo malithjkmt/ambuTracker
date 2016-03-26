@@ -3,5 +3,12 @@ Meteor.publish("OnlineUsers", function() {
 });
 Meteor.publish("Positions", function() {
 
-    return Positions.find({ });
+    // publish only the locations of the ambulances
+    return Positions.find({"type": "a"});
+});
+
+Meteor.publish("myPosition", function() {
+
+    // publish my location no matter who I am
+    return Positions.find({ userId: this.userId });
 });

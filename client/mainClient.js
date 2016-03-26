@@ -8,6 +8,7 @@
 
     Meteor.subscribe('OnlineUsers');
     Meteor.subscribe('Positions');
+    Meteor.subscribe('myPosition');
 
     Meteor.startup(function() {
         GoogleMaps.load();
@@ -271,7 +272,7 @@
 
                         // alert(pos.username + " is OUTSIDE the range ");
                          // Prevent removing my marker
-                         if(pos.username != me.username){
+                      //   if(pos.username != me.username){
                              // skip adding in to the map, remove the marker if already added
                              if(positions[pos.userId]) {
                                  console.log('remove offline users markers');
@@ -283,7 +284,7 @@
                                  Meteor.call('deletePosition', pos._id);
 
                              }
-                         }
+                       //  }
 
 
                     }

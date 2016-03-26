@@ -85,15 +85,28 @@
 
 	Accounts._loginButtons.displayName = function() {
 		var user = Meteor.user();
+		
+		var userType = '';
+		if(user.profile){
+			if(user.profile.Type == 'c'){
+				userType = 'Consumer';
+			}
+			else{
+				userType = 'Ambulance';
+			}
+
+		}
+
+		
 		if (!user){
 			return '';
 		}
 
 		if (user.profile && user.profile.name){
-			return user.profile.name;
+			return userType + " - " + user.profile.name;
 		}
 		if (user.username){
-			return user.username;
+			return userType + " - " + user.username;
 		}
 		if (user.emails && user.emails[0] && user.emails[0].address){
 			return user.emails[0].address;
