@@ -3,6 +3,8 @@
 
     var latLng;
     var map;
+    var destination;
+    var me = {username:"asdfasdf"};
 
     Meteor.subscribe('OnlineUsers');
     Meteor.subscribe('Positions');
@@ -23,9 +25,9 @@
             latLng = Geolocation.latLng();
 
 
-
             if (GoogleMaps.loaded() && latLng) {
 
+                // Map options
                 var mapOptions = {
                     zoom: ZOOM_LEVEL,  // ideal zoom level for streets
                     center: new google.maps.LatLng(latLng.lat, latLng.lng),
@@ -39,8 +41,10 @@
                     streetViewControl: true,
                     rotateControl: true,
                     fullscreenControl: true,
+
                     mapTypeControlOptions: {
                         style: google.maps.MapTypeControlStyle.DEFAULT,
+                        position: google.maps.ControlPosition.LEFT_BOTTOM,
                         mapTypeIds: [
                             google.maps.MapTypeId.ROADMAP,
                             google.maps.MapTypeId.HYBRID,
@@ -68,6 +72,8 @@
             centerControlDiv.index = 1;
             GoogleMaps.maps.myMap.instance.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
 
+            //################# Places search box begins.... ##################
+
             // Create the search box and link it to the UI element.
             var input = document.getElementById('pac-input');
             var searchBox = new google.maps.places.SearchBox(input);
@@ -78,6 +84,15 @@
                 searchBox.setBounds(GoogleMaps.maps.myMap.instance.getBounds());
             });
 
+            google.maps.event.addDomListener(input,'click',function(){
+                this.value='';
+                // Clear out the old markers.
+                markers.forEach(function(marker) {
+                    marker.setMap(null);
+                });
+                destination = null;
+            });
+
             var markers = [];
             // Listen for the event fired when the user selects a prediction and retrieve
             // more details for that place.
@@ -85,6 +100,7 @@
                 var places = searchBox.getPlaces();
 
                 if (places.length == 0) {
+
                     return;
                 }
 
@@ -96,13 +112,19 @@
 
                 // For each place, get the icon, name and location.
                 var bounds = new google.maps.LatLngBounds();
+                console.log("do it here!!!!!!!!!!!!!!");
+
                 places.forEach(function(place) {
+
+                    // backup the user searched destination
+                    destination = place.geometry.location;
+                    console.log(destination);
 
                     // Create a marker for each place.
                     markers.push(new google.maps.Marker({
                         map: GoogleMaps.maps.myMap.instance,
                         title: place.name,
-                        position: place.geometry.location
+                        position: destination
                     }));
 
                     if (place.geometry.viewport) {
@@ -115,19 +137,93 @@
                 GoogleMaps.maps.myMap.instance.fitBounds(bounds);
             });
 
+            //################# Places search box ends.... ##################
 
-            // Create and move the position when latLng changes.
+            // Create and move the position """"when latLng changes.""""" (when only if the clients, lat lang changes)
             self.autorun(function() {
 
+                console.log("self.autorun runs");
                 //####### Setup markers########
                 // get all current markers from Collection
                 var markerCursor = Positions.find({});
 
-
                 markerCursor.forEach(function(pos) {
 
+                    // Only show the ambulances within 1Km if user has selected a specific location
+                    // ( if only the user has selected a destination)
+                    if(destination) {
+                        // condition to check the marker is within the 1000m range
+                        var range = distance(pos.position.lat, pos.position.lng, destination.lat(), destination.lng());
+                        if(range <1000){
+
+                            // Load only the online users
+                                if(Meteor.users.findOne({_id:pos.userId})){
+                                  //  alert(pos.username + " is inside the range " + range);
+
+                                // if the marker of the user has never been added to the map
+                                if (!positions[pos.userId]) {
+                                    console.log('added new marker for ' + pos.username);
+
+                                    var markerIcon;
+                                    // assign marker icons for ambulance and consumers
+                                    if(pos.type == 'a'){
+                                        markerIcon = 'img/ambulance2.png';
+                                    }
+                                    else if(pos.type == 'c'){
+                                        markerIcon = 'img/male.png';
+                                    }
+
+                                    positions[pos.userId] = new google.maps.Marker({
+                                        position: new google.maps.LatLng(pos.position.lat, pos.position.lng),
+                                        map: map.instance,
+                                        title: pos.username,
+                                        icon: markerIcon
+                                    });
+                                }
+
+
+                                // if the marker of that user already been added to the map
+                                else {
+                                    console.log('updating marker for ' + pos.username);
+                                    positions[pos.userId].setPosition(pos.position);
+                                }
+                            }
+                            else{
+
+                                if(positions[pos.userId]){
+                                    console.log('remove logged out user');
+                                    positions[pos.userId].setMap(null);
+                                    positions[pos.userId] = null;
+
+                                    // remove the marker from  the collection also
+                                    alert("deleting " + pos.username + "'s position because user is in range but not online ");
+                                    Meteor.call('deletePosition', pos._id);
+
+                                }
+
+                            }
+
+
+                         }
+                        else if(pos.username != me.username){
+                            // skip adding in to the map, remove the marker if already added
+                            if(positions[pos.userId]) {
+                                console.log('remove out of range markers');
+                                positions[pos.userId].setMap(null);
+                                positions[pos.userId] = null;
+
+                                // remove the marker from  the collection also
+                                alert("deleting " + pos.username + "'s position because user is not in range ");
+                              /*  Meteor.call('deletePosition', pos._id);*/
+
+                            }
+                        }
+
+                    }
+
                     // Load only the online users
-                    if(Meteor.users.findOne({_id:pos.userId})){
+                     else if(Meteor.users.findOne({_id:pos.userId})){
+                        // alert(pos.username + " is online!!!");
 
                         // if the marker of the user has never been added to the map
                         if (!positions[pos.userId]) {
@@ -157,21 +253,47 @@
                             positions[pos.userId].setPosition(pos.position);
                         }
                     }
+
+                     // if the owner of the marker is not online
                     else{
 
+                       /*  alert(pos.username + " is offline");
                         if(positions[pos.userId]){
                             console.log('remove logged out user');
                             positions[pos.userId].setMap(null);
                             positions[pos.userId] = null;
 
-                        }
+                            // remove the marker from  the collection also
+                            alert("deleting " + pos.username + "'s position because not online");
+                            Meteor.call('deletePosition', pos._id);
+
+                        }*/
+
+                        // alert(pos.username + " is OUTSIDE the range ");
+                         // Prevent removing my marker
+                         if(pos.username != me.username){
+                             // skip adding in to the map, remove the marker if already added
+                             if(positions[pos.userId]) {
+                                 console.log('remove offline users markers');
+                                 positions[pos.userId].setMap(null);
+                                 positions[pos.userId] = null;
+
+                                 // remove the marker from  the collection also
+                                 alert("deleting " + pos.username + "'s position because user is not online ");
+                                 Meteor.call('deletePosition', pos._id);
+
+                             }
+                         }
+
 
                     }
+
                 });
 
 
                 // If the user has logged in
                 if(Meteor.user()) {
+                    me = Meteor.user();
                     var userId = Meteor.userId();
                     //update Collection
 
@@ -194,6 +316,22 @@
 
         });
     });
+
+    function distance(lat1, lng1, lat2, lng2) {
+        var R = 6371000; // metres ( radius of earth)
+        var φ1 = lat1*Math.PI / 180;
+        var φ2 = lat2*Math.PI / 180;
+        var Δφ = (lat2-lat1)*Math.PI / 180;
+        var Δλ = (lng2-lng1)*Math.PI / 180;
+
+        var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        var d = R * c;
+        return d;
+    }
 
     Accounts.ui.config({
         passwordSignupFields: "USERNAME_ONLY",
