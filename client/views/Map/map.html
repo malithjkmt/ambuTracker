@@ -1,0 +1,30 @@
+
+<template name="MapView">
+    <div id="holder">
+    <h1 id="home">
+        <a id="menu-toggle" href="#" class="glyphicon glyphicon-align-justify btn-menu toggle" style="top: 13px;">
+        </a>
+
+
+    </h1>
+
+    <input id="pac-input" class="controls" type="text" placeholder="Search Destination" style="line-height: normal;">
+        </div>
+
+
+    {{>map}}
+</template>
+
+
+<template name="map">
+    {{#unless geolocationError}}
+        {{> googleMap
+        name="myMap"
+        options=myMapOptions
+        }}
+    {{else}}
+        Geolocation failed: {{geolocationError}}
+        <h3>Check your internet connection or turn on Location</h3>
+    {{/unless}}
+
+</template>

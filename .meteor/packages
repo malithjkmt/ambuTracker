@@ -24,3 +24,5 @@ accounts-base
 accounts-ui-bootstrap-3
 mdg:geolocation
 google-maps
+reactive-var
+iron:router

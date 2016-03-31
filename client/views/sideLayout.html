@@ -1,0 +1,31 @@
+<template name="mainSide">
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <nav id="spy">
+                <ul class="sidebar-nav nav">
+                    <li class="sidebar-brand">
+                        <a href="/"><span class="fa fa-home solo">Register</span></a>
+                    </li>
+                    <li>
+                        <a href="/map" data-scroll>
+                            <span class="fa fa-anchor solo">Map</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Page content -->
+        <div id="page-content-wrapper">
+            <div class="content-header">
+                {{>yield}}
+            </div>
+
+
+
+        </div>
+
+    </div>
+</template>

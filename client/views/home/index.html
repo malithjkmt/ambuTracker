@@ -6,44 +6,32 @@
 
 </head>
 <body>
-<nav class="navbar navbar-inverse" style="margin-bottom: 0px;">
-    <div class="container-fluid">
-        <div class="navbar-header" >
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Bulance Tracker</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"> {{>newLoginButton}}</a></li>
-
-
-            </ul>
-        </div>
-    </div>
-</nav>
-
-        <input id="pac-input" class="controls" type="text" placeholder="Search Destination">
-        {{>map}}
-
 </body>
+
+<template name="navBar">
+    <nav class="navbar navbar-inverse" style="margin-bottom: 0px;">
+        <div class="container-fluid">
+            <div class="navbar-header" >
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Bulance Tracker</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"> {{>newLoginButton}}</a></li>
+
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+</template>
+
 <template name="newLoginButton">
     {{>_loginButtons}}
 </template>
 
-<template name="map">
-    {{#unless geolocationError}}
-        {{> googleMap
-        name="myMap"
-        options=myMapOptions
-        }}
-    {{else}}
-        Geolocation failed: {{geolocationError}}
-        <h3>Check your internet connection or turn on Location</h3>
-    {{/unless}}
-
-</template>
 

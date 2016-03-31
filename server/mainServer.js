@@ -1,6 +1,7 @@
 
 // add new users to the Collection
 Accounts.onLogin(function(user){
+
     var userId = user.user._id;
     var loginUser =  Meteor.users.findOne({_id:userId});
     var username = loginUser.username;

@@ -10,8 +10,27 @@ Meteor.subscribe('Positions');
 Meteor.subscribe('myPosition');
 
 Meteor.startup(function () {
+
     GoogleMaps.load();
 });
+
+Template.Register.events({
+    'click #menu-toggle': function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $("#wrapper").toggleClass("active");
+    }
+});
+
+Template.MapView.events({
+    'click #menu-toggle': function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $("#wrapper").toggleClass("active");
+    }
+});
+
+
 
 Template.map.helpers({
     geolocationError: function () {
@@ -75,9 +94,10 @@ Template.map.onCreated(function () {
 
         //################# Places search box begins.... ##################
         // Create the search box and link it to the UI element.
+        var holder = document.getElementById('holder');
         var input = document.getElementById('pac-input');
         var searchBox = new google.maps.places.SearchBox(input);
-        GoogleMaps.maps.myMap.instance.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        GoogleMaps.maps.myMap.instance.controls[google.maps.ControlPosition.TOP_LEFT].push(holder);
 
         // Bias the SearchBox results towards current map's viewport.
         GoogleMaps.maps.myMap.instance.addListener('bounds_changed', function () {
@@ -85,6 +105,15 @@ Template.map.onCreated(function () {
         });
 
         google.maps.event.addDomListener(input, 'click', function () {
+        /*   // Meteor.call('addAnonymousUser');
+            if (Meteor.isCordova) {
+                TelephoneNumber.get(function(result) {
+                    console.log('Phone number: ' + result.line1Number);
+                }, function() {
+                    console.log('Error. Do the phone have this feature? (Settings > About Phone > SIM > Number)');
+                });
+            }
+*/
             this.value = '';
             // Clear out the old markers.
             markers.forEach(function (marker) {
