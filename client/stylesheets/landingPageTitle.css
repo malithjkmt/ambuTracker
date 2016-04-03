@@ -1,0 +1,23 @@
+#title{
+    margin-top: 30%;
+}
+
+#title h1 {
+    position: relative;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #EEE;
+    color: #666;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 100;
+    font-size: 22px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+#title h1 span {
+    position: relative;
+    top: 13px;
+    padding: 0 10px;
+    background: #FFF;
+}

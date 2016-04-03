@@ -1,12 +1,17 @@
 Router.configure({
     // the default layout
-    layoutTemplate: 'mainSide'
+    //layoutTemplate: 'mainSide'
 });
 
 Router.route('/', function () {
+    this.render('frontDoor');
+});
+
+Router.route('/Register', function () {
     this.render('Register');
     this.layout('mainSide');
 });
+
 
 
 Router.route('/map', function () {
