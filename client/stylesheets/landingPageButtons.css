@@ -4,36 +4,35 @@
 /* Base page styles */
 body {
     font-family: 'PT Sans', sans-serif;
-    background-color: #f1f1f1;
-    text-align: center;
+
     background-image: url("img/back.jpg");
 }
 
-h2 {
+#landingPage h2 {
     text-transform: uppercase;
     font-size: 16px;
     margin-bottom: 0;
     padding-top: 20px;
     border-top: 1px solid #ccc;
 }
-h2.no-separator {
+#landingPage h2.no-separator {
     border: none;
 }
 
-ul {
+#landingPage ul {
     list-style: none;
     margin: 0 auto;
     padding: 0;
     text-align: center;
 }
 
-li {
+#landingPage li {
     display: inline-block;
     margin: 0 20px;
 }
 
 /* Base Button Style */
-.btn {
+#landingPage .btn {
     position: relative;
     display: block;
     width: 250px;
@@ -48,7 +47,7 @@ li {
     transform-style: flat;
     transition: all 250ms ease-out;
 }
-.btn:before, .btn:after {
+#landingPage .btn:before, .btn:after {
     content: "";
     position: absolute;
     z-index: -2;
@@ -56,39 +55,39 @@ li {
 }
 
 /* Paper effect – slightly raised off background */
-.paper {
+#landingPage .paper {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(128, 128, 128, 0.1) inset;
     border-color: #dedede;
 }
 
 /* Raised effect – pushes up on hover */
-.paper-raise:before {
+#landingPage .paper-raise:before {
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
 }
-.paper-raise:hover {
+#landingPage .paper-raise:hover {
     border: 1px solid #fff;
 }
-.paper-raise:hover:before {
+#landingPage .paper-raise:hover:before {
     box-shadow: 0 15px 10px -10px rgba(31, 31, 31, 0.5);
 }
 
-.paper-raise-flatten {
+#landingPage .paper-raise-flatten {
     border-color: #fff;
     box-shadow: none;
 }
-.paper-raise-flatten:before {
+#landingPage .paper-raise-flatten:before {
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     box-shadow: 0 15px 10px -10px rgba(31, 31, 31, 0.5);
 }
-.paper-raise-flatten:hover {
+#landingPage .paper-raise-flatten:hover {
     border-color: #dedede;
 }
-.paper-raise-flatten:hover:before {
+#landingPage .paper-raise-flatten:hover:before {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(128, 128, 128, 0.1) inset;
 }
