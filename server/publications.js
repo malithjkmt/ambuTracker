@@ -14,3 +14,9 @@ Meteor.publish("myPosition", function() {
     // publish my location no matter who I am
     return Positions.find({ userId: this.userId });
 });
+
+Meteor.publish("hospitals", function() {
+
+    // publish my location no matter who I am
+    return Hospitals.find({ });
+});

@@ -14,3 +14,10 @@ Router.route('/map', function () {
     this.layout('mainSide');
 
 });
+
+
+Router.route('/mapRegister', function () {
+    this.render('mapRegister');
+    this.layout('mainSide');
+
+});

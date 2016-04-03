@@ -147,11 +147,6 @@ html, body {
 
 
 
-.content-header {
-    height: 65px;
-    line-height: 65px;
-}
-
 .content-header h1 {
     margin: 0;
     margin-left: 20px;
@@ -296,6 +291,10 @@ html, body {
 
 .content-header {
     height: 65px;
+
+}
+
+#custom-header{
     line-height: 65px;
 }
 

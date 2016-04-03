@@ -129,8 +129,8 @@ GoogleMaps = {
                     lat: latLng.lat,
                     lng: latLng.lng
                 };
-                    GoogleMaps.maps.myMap.instance.setCenter(pos);
-                    GoogleMaps.maps.myMap.instance.setZoom(18);
+                    map.setCenter(pos);
+                    map.setZoom(18);
                   
             });
 
@@ -180,8 +180,8 @@ Template.googleMap.onRendered(function() {
 });
 
 Template.googleMap.onDestroyed(function() {
-  if (GoogleMaps.maps.myMap.instance[this._name]) {
-    google.maps.event.clearInstanceListeners(GoogleMaps.maps.myMap.instances[this._name].instance);
-    delete GoogleMaps.maps.myMap.instances[this._name];
-  }
+    if (GoogleMaps.maps.mapRegister.instance[this._name]) {
+        google.maps.event.clearInstanceListeners(GoogleMaps.maps.mapRegister.instances[this._name].instance);
+        delete GoogleMaps.maps.mapRegister.instances[this._name];
+    }
 });
