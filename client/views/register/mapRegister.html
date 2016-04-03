@@ -7,14 +7,17 @@
 
 <template name="mapRegister">
 
-    <div id="holder">
-        <h1 id="home">
-            <a id="menu-toggle" href="#" class="glyphicon glyphicon-align-justify btn-menu toggle" style="top: 13px;">
-            </a>
-        </h1>
+    {{#if isAdmin}}
+        <div id="holder">
+            <h1 id="home">
+                <a id="menu-toggle" href="#" class="glyphicon glyphicon-align-justify btn-menu toggle" style="top: 13px;">
+                </a>
+            </h1>
 
-        <input id="pac-input" class="controls" type="text" placeholder="Search Destination" style="line-height: normal;">
-    </div>
+            <input id="pac-input" class="controls" type="text" placeholder="Search Destination" style="line-height: normal;">
+        </div>
+    {{/if}}
+
 
 
     <a href="/"  id="saveLoc"> <button type="button" class="btn btn btn-info" style="margin-bottom: 35px"><span class="glyphicon glyphicon-search" id="findInMap" ></span> Save Location</button></a>

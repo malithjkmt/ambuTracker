@@ -6,6 +6,7 @@ var map;
 var destination;
 
 
+
 Template.map.helpers({
     geolocationError: function () {
         var error = Geolocation.error();
@@ -64,6 +65,7 @@ Template.MapView.events({
 // This only runs once after the API loaded
 Template.map.onCreated(function () {
 
+
     var self = this;
 
     GoogleMaps.ready('myMap', function (map) {
@@ -72,7 +74,7 @@ Template.map.onCreated(function () {
         // This array stores the markers locally to the client
         positions = [];
 
-        updateMap(destination, map);
+
 
         // Create the DIV to hold the control and call the CenterControl()
         // constructor passing in this DIV.
@@ -111,6 +113,7 @@ Template.map.onCreated(function () {
             destination = null;
 
         });
+
 
         var markers = [];
         // Listen for the event fired when the user selects a prediction and retrieve
@@ -158,6 +161,7 @@ Template.map.onCreated(function () {
         });
         //################# Places search box ends.... ##################
 
+
         // ################## update user location on the map reactively  ############
         self.autorun(function () {
 
@@ -178,6 +182,7 @@ Template.map.onCreated(function () {
 
         });
 
+        updateMap(destination, map);
     });
 });
 
@@ -188,7 +193,14 @@ function  updateMap(destination, map) {
     //####### Setup markers########
     // get all current markers from Collection
     var markerCursor = Hospitals.find({});
-    console.log("inside function");
+    var infowindow = new google.maps.InfoWindow({
+        content: "details"
+    });
+
+    google.maps.event.addListener(map.instance, 'click', function(event) {
+        infowindow.close();
+    });
+
 
     // Try to draw each markers on the map
     markerCursor.forEach(function (pos) {
@@ -210,6 +222,12 @@ function  updateMap(destination, map) {
                         title: pos.name,
                         icon: 'img/hospital.png',
                         animation: google.maps.Animation.DROP
+                    });
+
+                    positions[pos._id].addListener('click', function() {
+
+                        infowindow.setContent(pos.name + " Rs. " + pos.charges+ "/- per 1Km");
+                        infowindow.open(map.instance, positions[pos._id]);
                     });
                 }
                 // if the marker of that user already been added to the map, update the current position
@@ -238,6 +256,15 @@ function  updateMap(destination, map) {
                     icon: 'img/hospital.png',
                     animation: google.maps.Animation.DROP
                 });
+
+
+
+                positions[pos._id].addListener('click', function() {
+
+                    infowindow.setContent(pos.name + " Rs. " + pos.charges+ "/- per 1Km");
+                    infowindow.open(map.instance, this);
+                });
+
             }
             // if the marker of that user already been added to the map
             else {

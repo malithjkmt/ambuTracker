@@ -15,6 +15,12 @@ Router.route('/map', function () {
 
 });
 
+Router.route('/updateAmbulances', function () {
+    this.render('UpdateAmbulances');
+    this.layout('mainSide');
+
+});
+
 
 Router.route('/mapRegister', function () {
     this.render('mapRegister');

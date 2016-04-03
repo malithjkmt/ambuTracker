@@ -1,0 +1,31 @@
+<template name="UpdateAmbulances" xmlns="http://www.w3.org/1999/html">
+    <h2 id="home" style=" margin-top: 0px; margin-left: 45px; padding-top: 5px">
+        <a id="menu-toggle" href="#" class="glyphicon glyphicon-align-justify btn-menu toggle"> </a>
+        Update Ambulance
+    </h2>
+<div id="custom-header">
+    <div class ="container" style="width: 80%">
+
+        <form role="form" id="arooly_cform">
+
+
+                       <div class="form-group">
+                <label for="inputNumberOfAmbulance">Number of Available Ambulances *</label>
+                <div class="input-group Name">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-bed"></i></span><input type="number" class="form-control" id="inputNumberOfAmbulance" name="inputNumberOfAmbulance" placeholder="Enter Number">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputCharges">Charges (per Km) *</label>
+                <div class="input-group Name">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-bed"></i></span><input type="number" class="form-control" id="inputCharges" name="inputCharges" placeholder="Enter Charges (Rs.)">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="updateButton">Update</button>
+
+        </form>
+    </div>
+</div>
+</template>

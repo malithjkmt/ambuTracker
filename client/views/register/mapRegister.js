@@ -8,6 +8,16 @@ var latLng;
 var map;
 var destination;
 
+Template.mapRegister.helpers({
+    isAdmin: function (){
+        if(true){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+});
 
 Template.mapRegister.events({
     'click #menu-toggle': function(e) {

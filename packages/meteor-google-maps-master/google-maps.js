@@ -180,8 +180,8 @@ Template.googleMap.onRendered(function() {
 });
 
 Template.googleMap.onDestroyed(function() {
-    if (GoogleMaps.maps.mapRegister.instance[this._name]) {
-        google.maps.event.clearInstanceListeners(GoogleMaps.maps.mapRegister.instances[this._name].instance);
-        delete GoogleMaps.maps.mapRegister.instances[this._name];
+    if (GoogleMaps.maps[this._name]) {
+        google.maps.event.clearInstanceListeners(GoogleMaps.maps[this._name].instance);
+        delete GoogleMaps.maps[this._name];
     }
 });

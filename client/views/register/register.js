@@ -6,6 +6,7 @@ Template.Register.onRendered(function () {
 
     var hospitalName = Session.get('hospitalName');
     var numberOfAmbulance = Session.get('numberOfAmbulance');
+    var charges =Session.get('charges');
     var phoneNumber =Session.get('phoneNumber');
     var email = Session.get('email');
 
@@ -15,6 +16,9 @@ Template.Register.onRendered(function () {
     }
     if(numberOfAmbulance){
         document.getElementById('inputNumberOfAmbulance').value = numberOfAmbulance;
+    }
+    if(charges){
+        document.getElementById('inputCharges').value = charges;
     }
     if(phoneNumber){
         document.getElementById('inputPhone').value = phoneNumber;
@@ -42,6 +46,7 @@ Template.Register.events({
         const hospitalName = document.getElementById('inputName').value;
         const position =Session.get('hospital-location');
         const numberOfAmbulance = document.getElementById('inputNumberOfAmbulance').value;
+        const charges = document.getElementById('inputCharges').value;
         const phoneNumber = document.getElementById('inputPhone').value;
         const email = document.getElementById('inputEmail').value;
 
@@ -50,6 +55,7 @@ Template.Register.events({
             name: hospitalName,
             position: position,
             number:numberOfAmbulance,
+            charges:charges,
             phone: phoneNumber,
             email: email
         });
@@ -63,11 +69,13 @@ Template.Register.events({
         e.preventDefault();
         var hospitalName = document.getElementById('inputName').value;
         var numberOfAmbulance = document.getElementById('inputNumberOfAmbulance').value;
+        var charges = document.getElementById('inputCharges').value;
         var phoneNumber = document.getElementById('inputPhone').value;
         var email = document.getElementById('inputEmail').value;
 
         Session.set('hospitalName', hospitalName);
         Session.set('numberOfAmbulance', numberOfAmbulance);
+        Session.set('charges', charges);
         Session.set('phoneNumber', phoneNumber);
         Session.set('email', email);
 
