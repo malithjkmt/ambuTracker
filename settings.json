@@ -1,8 +1,7 @@
 {
   "galaxy.meteor.com": {
     "env": {
-      "MONGO_URL": "mongodb://<username>:<password>@aws-us-east-1-portal.12.dblayer.com:10398/admin?ssl=true",
+      "MONGO_URL": "mongodb://malith:123123@aws-us-east-1-portal.12.dblayer.com:10573/admin?ssl=true"
+    }
     }
   }
-
-}
