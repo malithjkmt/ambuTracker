@@ -2,10 +2,13 @@
 
 
 /* Base page styles */
-body {
-    font-family: 'PT Sans', sans-serif;
+#landingPage{
 
-    background-image: url("img/back.jpg");
+    font-family: 'PT Sans', sans-serif;
+    padding-top: 20%;
+    height: 100%;
+    width: 100%;
+
 }
 
 #landingPage h2 {
@@ -33,6 +36,7 @@ body {
 
 /* Base Button Style */
 #landingPage .btn {
+    z-index: 1;
     position: relative;
     display: block;
     width: 250px;

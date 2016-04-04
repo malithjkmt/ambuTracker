@@ -5,7 +5,7 @@ var latLng;
 var map;
 var destination;
 
-
+var myMarker;
 
 Template.map.helpers({
     geolocationError: function () {
@@ -171,14 +171,21 @@ Template.map.onCreated(function () {
                 return;
             }
 
-            new google.maps.Marker({
-                position: latLng,
-                map: map.instance,
-                title: "me",
-                icon :'img/male.png',
-                animation: google.maps.Animation.DROP
+            // if the user hasn't assign a marker
+            if(!myMarker) {
 
-            });
+                myMarker = new google.maps.Marker({
+                    position: latLng,
+                    map: map.instance,
+                    title: "me",
+                    icon: 'img/male.png',
+                    animation: google.maps.Animation.DROP
+
+                });
+            }
+            else{
+                myMarker.setPosition(latLng);
+            }
 
         });
 
@@ -210,7 +217,6 @@ function  updateMap(destination, map) {
             // Only show the hospitals within 1Km if user has selected a specific location
             var range = distance(pos.position.lat, pos.position.lng, destination.lat(), destination.lng());
             // condition to check the marker(Hospital) is within the 1000m range
-            console.log(range);
             if (range < 1000) {
 
                 // if the marker of the user is not available on the map
@@ -269,7 +275,7 @@ function  updateMap(destination, map) {
             // if the marker of that user already been added to the map
             else {
                 // update the marker position
-                positions[pos._id].setPosition(pos.position);
+                positions[pos._id].setPosition(pos.profile.position);
             }
         }
     });

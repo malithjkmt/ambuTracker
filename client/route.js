@@ -27,6 +27,13 @@ Router.route('/updateAmbulances', function () {
 });
 
 
+Router.route('/login', function () {
+    this.render('login');
+
+});
+
+
+
 Router.route('/mapRegister', function () {
     this.render('mapRegister');
     this.layout('mainSide');

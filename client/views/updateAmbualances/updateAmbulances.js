@@ -14,7 +14,7 @@ Template.UpdateAmbulances.events({
     'click #updateButton':function(event) {
         // Prevent default browser form submit
         event.preventDefault();
-
+/*
         // Get value from form element
         const numberOfAmbulance = document.getElementById('inputNumberOfAmbulance').value;
         const charges = document.getElementById('inputCharges').value;
@@ -29,7 +29,7 @@ Template.UpdateAmbulances.events({
             );
 
         Router.go('/map');
-
+*/
     }
 
 });

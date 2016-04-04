@@ -49,6 +49,7 @@ Template.Register.events({
         const charges = document.getElementById('inputCharges').value;
         const phoneNumber = document.getElementById('inputPhone').value;
         const email = document.getElementById('inputEmail').value;
+        const password = document.getElementById('inputPassword').value;
 
         // Insert a task into the collection
         Hospitals.insert({
@@ -57,10 +58,27 @@ Template.Register.events({
             number:numberOfAmbulance,
             charges:charges,
             phone: phoneNumber,
-            email: email
+            email: email,
+            password: password
         });
-
         Router.go('/map');
+      /*  var user = {email:email, password: password, profile: { name: hospitalName,
+            position: position,
+            number:numberOfAmbulance,
+            charges:charges,
+            phone: phoneNumber
+            }};
+
+        Accounts.createUser(user,function(err){
+            if(!err) {
+                Router.go('/map');
+            }
+            else {
+
+            }
+        });*/
+
+
 
     },
 

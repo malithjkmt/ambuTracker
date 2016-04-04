@@ -1,9 +1,9 @@
 
 var me = {username: "asdfasdf"};
 
-Meteor.subscribe('OnlineUsers');
-Meteor.subscribe('Positions');
-Meteor.subscribe('myPosition');
+//Meteor.subscribe('users');
+/*Meteor.subscribe('Positions');
+Meteor.subscribe('myPosition');*/
 Meteor.subscribe('hospitals');
 
 Meteor.startup(function () {

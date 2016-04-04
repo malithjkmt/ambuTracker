@@ -194,12 +194,12 @@ Template.mapRegister.onCreated(function () {
                 destination = place.geometry.location;
 
                 // Create a marker for each place.
-                markers.push(new google.maps.Marker({
+               /* markers.push(new google.maps.Marker({
                     map: map.instance,
                     title: place.name,
                     position: destination,
                     animation: google.maps.Animation.DROP
-                }));
+                }));*/
 
                 if (place.geometry.viewport) {
                     // Only geocodes have viewport.
