@@ -52,16 +52,22 @@ Template.Register.events({
         const password = document.getElementById('inputPassword').value;
 
         // Insert a task into the collection
-        Hospitals.insert({
-            name: hospitalName,
-            position: position,
-            number:numberOfAmbulance,
-            charges:charges,
-            phone: phoneNumber,
-            email: email,
-            password: password
-        });
-        Router.go('/map');
+        if(position) {
+            Hospitals.insert({
+                name: hospitalName,
+                position: position,
+                number: numberOfAmbulance,
+                charges: charges,
+                phone: phoneNumber,
+                email: email,
+                password: password
+            });
+            Router.go('/map');
+        }
+        else{
+            alert('please select the location!!');
+        }
+
       /*  var user = {email:email, password: password, profile: { name: hospitalName,
             position: position,
             number:numberOfAmbulance,
